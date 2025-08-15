@@ -1,13 +1,21 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { componentTagger } from "lovable-tagger";
 
-export default defineConfig({
-  base: "/projetNavetane/", // <-- ajoute ceci, avec le nom exact de ton repo
+export default defineConfig(({ mode }) => ({
+  base: "/projetNavetane/", // <-- ajoute cette ligne avec le nom de ton repo
+  server: {
+    host: "::",
+    port: 8080,
+  },
+  plugins: [
+    react(),
+    mode === 'development' && componentTagger(),
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  plugins: [react()],
-});
+}));
